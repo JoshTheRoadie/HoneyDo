@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>{{ current_user.username }}'s Homepage</h1>
+</div>
+{{ wtf.quick_form(todo_form) }}
+<div>
+    <h2>My Honey-Do Lists:</h2>
+    {% for todo in current_user.todos %}
+    <h4><a href="{{ url_for('todo.add_task', todo_id=todo.id) }}">{{ todo.title }}</a></h4>
+        <ul>
+        {% for task in todo.tasks %}
+            <li>{{ task.task }}<form action="{{ url_for('todo.home') }}" name="strike_form" method="post">
+                <input type="submit" name="btn" value="{{ task.id }}">
+            </form></li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+</div>
+<div>
+    <h2>Shared Lists</h2>
+    {% for other_user in current_user.followed %}
+        <h4>{{ other_user.username }}'s Lists:</h4>
+        {% for todo in other_user.todos %}
+            <h4><a href="{{ url_for('todo.add_task', todo_id=todo.id) }}">{{ todo.title }}</a></h4>
+            <ul>
+            {% for task in todo.tasks %}
+                <li>{{ task.task }}</li>
+            {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endfor %}
+</div>
+{% endblock %}

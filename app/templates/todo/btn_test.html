@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Button Test</h1>
+</div>
+<div class="container">
+    {% for num in range(10) %}
+    <form action="{{ url_for('todo.btn_test') }}" method="post">
+        <input type="submit" name="btn" value="{{ num }}">
+    </form>
+    {% endfor %}
+</div>
+
+{% endblock %}
